@@ -89,8 +89,6 @@ function RootLayoutNav() {
             headerRight: () => <ThemeToggle />,
           }}
         />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
       </Stack>
       <PortalHost />
     </ThemeProvider>
