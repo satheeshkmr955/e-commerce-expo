@@ -8,7 +8,8 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { useNavigationContainerRef, Stack } from "expo-router";
+import { useReactNavigationDevTools } from "@dev-plugins/react-navigation";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
@@ -21,6 +22,9 @@ import { NAV_THEME } from "@/lib/constants";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useColorScheme } from "@/lib/useColorScheme";
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
+
+import type { NavigationContainerRef } from "@react-navigation/native";
+import type { RefObject } from "react";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -38,7 +42,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
+  initialRouteName: "index",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -56,6 +60,12 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
   usePlatformSpecificSetup();
+
+  const navigationRef = useNavigationContainerRef();
+
+  useReactNavigationDevTools(
+    navigationRef as RefObject<NavigationContainerRef<any>>
+  );
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
