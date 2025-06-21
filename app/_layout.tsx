@@ -16,10 +16,10 @@ import "react-native-reanimated";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { Appearance, Platform } from "react-native";
+import { HelmetProvider } from "expo-router/vendor/react-helmet-async/lib";
 
 import { PortalHost } from "@rn-primitives/portal";
 import { NAV_THEME } from "@/lib/constants";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { useColorScheme } from "@/lib/useColorScheme";
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
 
@@ -42,7 +42,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "index",
+  initialRouteName: "(root)/index",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -91,15 +91,17 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-      <Stack>
-        <Stack.Screen
-          name="index"
-          options={{
-            title: "Starter Base",
-            headerRight: () => <ThemeToggle />,
-          }}
-        />
-      </Stack>
+      <HelmetProvider>
+        <Stack>
+          <Stack.Screen
+            name="(root)/index"
+            options={{
+              title: "Admin Dashboard",
+              headerShown: Platform.OS === "web" ? false : true,
+            }}
+          />
+        </Stack>
+      </HelmetProvider>
       <PortalHost />
     </ThemeProvider>
   );
